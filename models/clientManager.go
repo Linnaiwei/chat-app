@@ -11,6 +11,10 @@ type ClientManager struct {
 	unregister chan *Client
 }
 
+func (manager *ClientManager) SetRegister(c *Client) {
+	manager.register <- c
+}
+
 func NewClientManager() *ClientManager {
 	return &ClientManager{
 		clients:    make(map[*Client]bool),

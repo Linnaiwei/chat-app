@@ -11,9 +11,6 @@ type Client struct {
 	send chan []byte
 }
 
-func NewClient() *Client {
-	return &Client{}
-}
 
 func (c *Client) Read(manager *ClientManager){
 	defer func() {
@@ -51,3 +48,34 @@ func (c *Client) Write() {
 		}
 	}
 }
+
+// Client builder pattern code
+type ClientBuilder struct {
+	client *Client
+}
+
+func NewClientBuilder() *ClientBuilder {
+	client := &Client{}
+	b := &ClientBuilder{client: client}
+	return b
+}
+
+func (b *ClientBuilder) Id(id string) *ClientBuilder {
+	b.client.id = id
+	return b
+}
+
+func (b *ClientBuilder) Socket(socket *websocket.Conn) *ClientBuilder {
+	b.client.socket = socket
+	return b
+}
+
+func (b *ClientBuilder) Send(send chan []byte) *ClientBuilder {
+	b.client.send = send
+	return b
+}
+
+func (b *ClientBuilder) Build() (*Client, error) {
+	return b.client, nil
+}
+
