@@ -36,3 +36,18 @@ func (c *Client) Read(manager *ClientManager){
 	}
 }
 
+func (c *Client) Write() {
+	defer func() {
+		_ = c.socket.Close()
+	}()
+
+	for {
+		select {
+		case message, ok := <- c.send:
+			if !ok {
+				_ = c.socket.WriteMessage(websocket.CloseMessage, []byte{})
+			}
+			_ = c.socket.WriteMessage(websocket.TextMessage, message)
+		}
+	}
+}
