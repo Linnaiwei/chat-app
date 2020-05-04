@@ -12,7 +12,7 @@ var localManager interface{}
 
 func ChatRoomHandler(manager *models.ClientManager) {
 	localManager = manager
-	http.HandleFunc("/chat-room", ChatRoomPage)
+	http.HandleFunc("/chat-room/", ChatRoomPage)
 }
 
 func ChatRoomPage(res http.ResponseWriter, req *http.Request)  {
